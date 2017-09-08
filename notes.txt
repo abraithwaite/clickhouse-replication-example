@@ -1,0 +1,5 @@
+xz -v -c -d < ~/Downloads/ontime.csv.xz | docker exec -i clickhouse_ch-client_1 /usr/bin/clickhouse-client --host ch-server-1 --query="INSERT INTO ontime FORMAT CSV"
+
+
+docker exec -it clickhouse_ch-client_1 /usr/bin/clickhouse-client --host ch-server-1
+

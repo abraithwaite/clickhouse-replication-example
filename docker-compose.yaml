@@ -1,0 +1,15 @@
+version: "3.2"
+services:
+  ch-server-1:
+    image: yandex/clickhouse-server
+    volumes:
+      - ./config.xml:/etc/clickhouse-server/config.d/local.xml
+    ports:
+      - 8123:8123
+      - 9000:9000
+  ch-client:
+    image: yandex/clickhouse-client
+    entrypoint:
+      - /bin/sleep
+    command:
+      - infinity
