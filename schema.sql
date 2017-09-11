@@ -1,12 +1,4 @@
-xz -v -c -d < ~/Downloads/ontime.csv.xz | docker exec -i clickhouse_ch-client_1 /usr/bin/clickhouse-client --host ch-server-1 --query="INSERT INTO ontime FORMAT CSV"
-
-
-docker exec -it clickhouse_ch-client_1 /usr/bin/clickhouse-client --host ch-server-1
-
-
-
-
-CREATE TABLE ontime_local
+CREATE TABLE IF NOT EXISTS ontime_schema
 (
     Year UInt16,
     Quarter UInt8,
@@ -119,3 +111,39 @@ CREATE TABLE ontime_local
     Div5TailNum String
 )
 ENGINE = MergeTree(FlightDate, (Year, FlightDate), 8192);
+
+CREATE DATABASE IF NOT EXISTS r0;
+
+/* Replicates from whomever else has the {shard} znode registered 
+ * This replica is {replica}
+ */
+CREATE TABLE IF NOT EXISTS r0.ontime AS default.ontime_schema
+ENGINE = ReplicatedMergeTree(
+    '/{cluster}/clickhouse/tables/{r0shard}/ontime',
+    '{r0replica}',
+    FlightDate,
+    (Year, FlightDate),
+    8192);
+);
+
+CREATE DATABASE IF NOT EXISTS r1;
+
+/* Replicates from whomever else has the {shard} znode registered 
+ * This replica is {replica}
+ */
+CREATE TABLE IF NOT EXISTS r1.ontime AS default.ontime_schema
+ENGINE = ReplicatedMergeTree(
+    '/{cluster}/clickhouse/tables/{r1shard}/ontime',
+    '{r1replica}',
+    FlightDate,
+    (Year, FlightDate),
+    8192);
+);
+
+CREATE TABLE IF NOT EXISTS default.ontime AS default.ontime_schema
+ENGINE = Distributed(
+    '{cluster}', 
+    '', /* select remote default database */
+    ontime /* Remote tables to read */
+);
+
