@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS ontime_schema
+CREATE TABLE IF NOT EXISTS default.ontime_schema
 (
     Year UInt16,
     Quarter UInt8,
@@ -110,7 +110,9 @@ CREATE TABLE IF NOT EXISTS ontime_schema
     Div5WheelsOff String,
     Div5TailNum String
 )
-ENGINE = MergeTree(FlightDate, (Year, FlightDate), 8192);
+ENGINE = MergeTree(
+    FlightDate, (Year, FlightDate), 8192
+);
 
 CREATE DATABASE IF NOT EXISTS r0;
 
@@ -119,11 +121,11 @@ CREATE DATABASE IF NOT EXISTS r0;
  */
 CREATE TABLE IF NOT EXISTS r0.ontime AS default.ontime_schema
 ENGINE = ReplicatedMergeTree(
-    '/{cluster}/clickhouse/tables/{r0shard}/ontime',
+    '/clickhouse/clusters/ontime_cluster/tables/{r0shard}/ontime',
     '{r0replica}',
     FlightDate,
     (Year, FlightDate),
-    8192);
+    8192
 );
 
 CREATE DATABASE IF NOT EXISTS r1;
@@ -133,17 +135,17 @@ CREATE DATABASE IF NOT EXISTS r1;
  */
 CREATE TABLE IF NOT EXISTS r1.ontime AS default.ontime_schema
 ENGINE = ReplicatedMergeTree(
-    '/{cluster}/clickhouse/tables/{r1shard}/ontime',
+    '/clickhouse/clusters/ontime_cluster/tables/{r0shard}/ontime',
     '{r1replica}',
     FlightDate,
     (Year, FlightDate),
-    8192);
+    8192
 );
 
 CREATE TABLE IF NOT EXISTS default.ontime AS default.ontime_schema
 ENGINE = Distributed(
-    '{cluster}', 
-    '', /* select remote default database */
-    ontime /* Remote tables to read */
+    'ontime_cluster', 
+    '',
+    ontime
 );
 

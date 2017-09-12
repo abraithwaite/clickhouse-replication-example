@@ -4,6 +4,7 @@ services:
     image: yandex/clickhouse-server
     volumes:
       - ./config.xml:/etc/clickhouse-server/config.d/local.xml
+      - ./macros1.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/1:/var/lib/clickhouse
     ports:
       - 8123:8123
@@ -11,11 +12,13 @@ services:
     image: yandex/clickhouse-server
     volumes:
       - ./config.xml:/etc/clickhouse-server/config.d/local.xml
+      - ./macros2.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/2:/var/lib/clickhouse
   ch-server-3:
     image: yandex/clickhouse-server
     volumes:
       - ./config.xml:/etc/clickhouse-server/config.d/local.xml
+      - ./macros3.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/3:/var/lib/clickhouse
   ch-client:
     image: yandex/clickhouse-client

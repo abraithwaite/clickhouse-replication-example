@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <yandex>
     <remote_servers>
         <ontime_cluster>
@@ -40,10 +39,10 @@
             </shard>
         </ontime_cluster>
     </remote_servers>
-    <zookeeper-servers>
+    <zookeeper>
         <node>
             <host>zookeeper</host>
             <port>2181</port>
         </node>
-    </zookeeper-servers>
+    </zookeeper>
 </yandex>
