@@ -9,7 +9,7 @@ services:
       - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
-      - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./conf/macros.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/1:/var/lib/clickhouse
     ports:
       - 8123:8123
@@ -22,7 +22,7 @@ services:
       - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
-      - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./conf/macros.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/2:/var/lib/clickhouse
   ch-server-3:
     image: yandex/clickhouse-server
@@ -33,7 +33,7 @@ services:
       - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
-      - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./conf/macros.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/3:/var/lib/clickhouse
   ch-client:
     image: yandex/clickhouse-client
