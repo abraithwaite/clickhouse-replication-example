@@ -1,0 +1,9 @@
+<yandex>
+  <macros replace="replace">
+    <r0shard from_env="CH_SHARD_R0"/>
+    <r0replica from_env="CH_REPLICA_R0"/>
+    <r1shard from_env="CH_SHARD_R1"/>
+    <r1replica from_env="CH_REPLICA_R1"/>
+    <cluster>ontime_cluster</cluster>
+  </macros>
+</yandex>

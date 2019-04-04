@@ -2,6 +2,11 @@ version: "3.2"
 services:
   ch-server-1:
     image: yandex/clickhouse-server
+    environment:
+      - CH_SHARD_R0=00
+      - CH_REPLICA_R0=00
+      - CH_SHARD_R1=01
+      - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
       - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
@@ -10,15 +15,25 @@ services:
       - 8123:8123
   ch-server-2:
     image: yandex/clickhouse-server
+    environment:
+      - CH_SHARD_R0=01
+      - CH_REPLICA_R0=00
+      - CH_SHARD_R1=02
+      - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
-      - ./conf/macros2.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/2:/var/lib/clickhouse
   ch-server-3:
     image: yandex/clickhouse-server
+    environment:
+      - CH_SHARD_R0=02
+      - CH_REPLICA_R0=00
+      - CH_SHARD_R1=00
+      - CH_REPLICA_R1=01
     volumes:
       - ./conf/config.xml:/etc/clickhouse-server/config.d/local.xml
-      - ./conf/macros3.xml:/etc/clickhouse-server/config.d/macros.xml
+      - ./conf/macros1.xml:/etc/clickhouse-server/config.d/macros.xml
       - ./data/3:/var/lib/clickhouse
   ch-client:
     image: yandex/clickhouse-client
